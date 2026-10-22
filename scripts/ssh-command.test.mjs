@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
 import { PassThrough } from 'node:stream';
-import { test } from 'node:test';
+import { expect, test, vi } from 'vitest';
 import { readSshRetryOptions, runSshCommand } from './ssh-command.mjs';
 
 const lost = () => Object.assign(new Error('Connection lost before handshake'), { level: 'protocol' });
@@ -34,6 +34,7 @@ function harness(scenarios, env = {}) {
           stream.stderr = new PassThrough();
           callback(null, stream);
           queueMicrotask(() => {
+            if (client.hangAfterExec) return;
             if (client.disconnectAfterExec) client.emit('error', Object.assign(new Error('reset'), { code: 'ECONNRESET' }));
             else if (client.streamError) stream.emit('error', new Error('lost response'));
             else {
@@ -103,6 +104,23 @@ test('un événement ready répété ne déclenche pas une seconde commande', as
   const h = harness([c => { c.emit('ready'); c.emit('ready'); }]);
   await h.run();
   assert.deepEqual(h.commands, ['test-command']);
+});
+
+test('délai dépassé après envoi : aucune seconde exécution', async () => {
+  vi.useFakeTimers();
+  try {
+    const h = harness([c => { c.hangAfterExec = true; c.emit('ready'); }], {
+      CTESTI_SSH_ATTEMPTS: '5',
+    });
+    const failure = expect(h.run()).rejects.toThrow('Délai SSH dépassé');
+    await vi.advanceTimersByTimeAsync(1001);
+    await failure;
+    expect(h.commands).toEqual(['test-command']);
+    expect(h.clients).toHaveLength(1);
+    expect(h.retries).toEqual([]);
+  } finally {
+    vi.useRealTimers();
+  }
 });
 
 test('les réglages absents conservent trois tentatives et une seconde', () => {

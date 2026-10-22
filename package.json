@@ -8,9 +8,13 @@
   },
   "scripts": {
     "ssh:check": "node scripts/check-ssh.mjs",
-    "test:ssh": "node --test scripts/ssh-command.test.mjs"
+    "test:ssh": "vitest run --config vitest.config.ts scripts/ssh-command.test.mjs",
+    "test": "vitest run --config vitest.config.ts"
   },
   "dependencies": {
     "ssh2": "^1.17.0"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.5"
   }
 }

@@ -77,4 +77,7 @@ commande échoue ou si sa réponse est perdue, elle n'est jamais renvoyée lors 
 cette invocation. En cas de coupure après son envoi, le résultat peut rester
 inconnu ; vérifier le serveur avant une relance manuelle.
 
-`npm run test:ssh` vérifie ces cas sans connexion réseau.
+`npm run test:ssh` vérifie ces cas avec Vitest, sans connexion réseau ni chargement
+du `.env`. Les tests SSH sont également inclus dans `npm test`. Un test utilise
+les horloges simulées pour vérifier qu'un délai dépassé après l'envoi de la
+commande ne provoque jamais sa réexécution.
