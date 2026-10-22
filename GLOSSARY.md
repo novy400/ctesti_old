@@ -12,3 +12,9 @@ Scénario fondé sur un comportement existant de ckool, utilisé dans le corpus 
 
 **Contexte IBM i de test**:
 Contexte d’exécution dédié à un seul test, conservé de sa préparation jusqu’à la collecte de ses observations.
+
+**Résultat d’appel**:
+Issue observable d’un appel RPGLE, terminé normalement ou avec une erreur IBM i, sur laquelle le test peut formuler des assertions.
+
+**Observations d’appel**:
+Valeurs et messages recueillis pour un appel RPGLE identifié dans son contexte IBM i de test. Les messages de préparation sont distincts de ceux de l’appel.
