@@ -9,3 +9,6 @@ Ensemble des scénarios de référence et de leurs résultats attendus dont la r
 
 **Référence ckool**:
 Scénario fondé sur un comportement existant de ckool, utilisé dans le corpus sans modification du projet ckool.
+
+**Contexte IBM i de test**:
+Contexte d’exécution dédié à un seul test, conservé de sa préparation jusqu’à la collecte de ses observations.
