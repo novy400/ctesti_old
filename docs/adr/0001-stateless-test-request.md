@@ -1,0 +1,9 @@
+# Une seule requête XMLSERVICE stateless par test
+
+Le 22 octobre 2026, le porteur du projet choisit de soumettre la préparation, les appels et la collecte des observations d’un test dans une seule requête XMLSERVICE `*here *cdata`, sans IPC. Le même job exécute la séquence pendant cette requête ; aucune continuité entre requêtes n’est requise. Ce contrat remplace la persistance par job dédié et IPC retenue dans les résolutions GitHub #3, #6 et dans l’ancienne rédaction du ticket #9, afin de simplifier le transport et le cycle de vie du MVP.
+
+Le scénario est construit avant soumission. Il peut contenir plusieurs appels RPGLE, mais aucune décision TypeScript, attente réseau ou observation intermédiaire côté client ne peut séparer ces appels. Les assertions TypeScript s’exécutent après réception de la réponse complète. L’identité qualifiée du job et les témoins LIBL/QTEMP sont relevés dans la même requête pour qualifier ce contrat.
+
+`*here` ne fournit aucune isolation des bibliothèques ou services externes, aucun rollback et aucune conservation automatique de QTEMP après la requête. Une coupure ou un timeout après soumission produit un état indéterminé sans rejeu, remplacement, terminaison forcée ou suppression automatique. Une réponse complète prouve la fin du scénario, pas la disparition physique du job hôte ; le banc n’administre pas ce job et n’envoie pas `*immed`.
+
+La qualification sur IBM i reste obligatoire ; les preuves précédentes du mode persistant restent historiques. Sur la cible disponible, aucune bibliothèque n’est créée : NOVY4001 et NOVY4002 sont des ressources existantes, et NOVY4002 est la référence du banc. ckool reste strictement en lecture seule. Les effets modifiables de ces premières preuves restent dans QTEMP ; l’isolation générale des données applicatives reste à traiter explicitement.

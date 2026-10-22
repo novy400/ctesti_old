@@ -41,7 +41,7 @@ export async function runSshCommand(config, command, {
       let authenticated = false;
       let output = '';
       let diagnostic = '';
-      const timer = setTimeout(() => finish('Délai SSH dépassé'), timeout);
+      let timer = setTimeout(() => finish('Délai SSH dépassé avant authentification', true), timeout);
 
       function finish(reason, connectionLost = false) {
         if (settled) return;
@@ -64,7 +64,9 @@ export async function runSshCommand(config, command, {
         };
         const authenticationFailed = error.level === 'client-authentication';
         const connectionLost = !authenticationFailed && (
-          ['ECONNRESET', 'ECONNABORTED', 'EPIPE'].includes(error.code)
+          error.level === 'client-timeout'
+          ||
+          ['ECONNRESET', 'ECONNABORTED', 'EPIPE', 'ETIMEDOUT'].includes(error.code)
           || error.message === 'Connection lost before handshake'
         );
         finish(messages[error.code] ?? (authenticationFailed
@@ -76,6 +78,8 @@ export async function runSshCommand(config, command, {
         // Barrière irréversible : même si exec échoue ou si sa réponse est perdue,
         // aucune nouvelle connexion et aucune seconde exécution ne sont permises.
         authenticated = true;
+        clearTimeout(timer);
+        timer = setTimeout(() => finish('Délai SSH dépassé'), timeout);
         client.exec(command, (error, stream) => {
           if (settled) return;
           if (error) { finish('Commande SSH refusée'); return; }

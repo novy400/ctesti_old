@@ -13,6 +13,9 @@ Scénario fondé sur un comportement existant de ckool, utilisé dans le corpus 
 **Contexte IBM i de test**:
 Contexte d’exécution dédié à un seul test, conservé de sa préparation jusqu’à la collecte de ses observations.
 
+**Scénario IBM i de test**:
+Séquence complète de préparation, d’appels et de collecte des observations d’un test, définie avant son exécution. Les assertions TypeScript portent sur les observations retournées par cette séquence.
+
 **Bibliothèque de test**:
 Bibliothèque dédiée à un seul test, contenant les objets et données préparés explicitement pour son exécution et appartenant à cTestI.
 

@@ -48,7 +48,7 @@ Variables utilisées :
 | `CTESTI_PASSWORD` | Mot de passe si `password` |
 | `CTESTI_PRIVATE_KEY` | Chemin de clé privée si `key` |
 | `CTESTI_PASSPHRASE` | Passphrase de clé, si nécessaire |
-| `CTESTI_TIMEOUT_MS` | Délai par tentative en millisecondes, `30000` par défaut |
+| `CTESTI_TIMEOUT_MS` | Budget de négociation, puis budget renouvelé pour la commande après authentification, en ms ; `30000` par défaut |
 | `CTESTI_SSH_ATTEMPTS` | Nombre total de tentatives, première incluse, entier ≥ 1 ; `3` par défaut |
 | `CTESTI_SSH_RETRY_DELAY_MS` | Attente entre les tentatives en ms, entier de 0 à 2147483647 ; `1000` par défaut |
 | `CTESTI_IBMI_COMMAND` | Commande CL exécutée avec `--ibmi`, test de version par défaut |
@@ -57,7 +57,7 @@ Les variables XMLSERVICE et de bibliothèque de preuve ne sont pas nécessaires.
 Le programme retourne un code de sortie `0` en cas de réussite, `1` en cas
 d'échec. `npm run ssh:check -- --help` affiche l'aide.
 
-Si la connexion coupe avant l'authentification, le script utilise ces réglages
+Si la connexion coupe ou si son délai expire avant l'authentification, le script utilise ces réglages
 du `.env` (trois tentatives au total, espacées d'une seconde par défaut) :
 
 ```dotenv

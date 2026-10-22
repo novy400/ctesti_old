@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-  test: { include: ['scripts/**/*.test.mjs'], retry: 0, fileParallelism: false },
+  test: { include: ['tests/**/*.test.ts', 'scripts/**/*.test.mjs'], retry: 0, fileParallelism: false },
 });

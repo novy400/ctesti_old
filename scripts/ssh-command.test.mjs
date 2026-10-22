@@ -66,6 +66,26 @@ test('deux coupures avant authentification puis une seule exécution', async () 
   assert.equal(h.commands.length, 1);
 });
 
+test('un timeout de négociation est repris avant authentification sans commande en double', async () => {
+  const h = harness([
+    c => c.emit('error', Object.assign(new Error('Timed out while waiting for handshake'), { level: 'client-timeout' })),
+    c => c.emit('ready'),
+  ]);
+  await h.run();
+  assert.equal(h.clients.length, 2);
+  assert.deepEqual(h.commands, ['test-command']);
+});
+
+test('un timeout TCP avant authentification permet une seule exécution après reprise', async () => {
+  const h = harness([
+    c => c.emit('error', Object.assign(new Error('connect timeout'), { code: 'ETIMEDOUT', level: 'client-socket' })),
+    c => c.emit('ready'),
+  ]);
+  await h.run();
+  assert.equal(h.clients.length, 2);
+  assert.deepEqual(h.commands, ['test-command']);
+});
+
 test('arrêt après trois connexions interrompues sans exécuter la commande', async () => {
   const h = harness(Array.from({ length: 3 }, () => c => c.emit('error', lost())));
   await assert.rejects(h.run(), /Négociation SSH/);

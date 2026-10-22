@@ -9,12 +9,22 @@
   "scripts": {
     "ssh:check": "node scripts/check-ssh.mjs",
     "test:ssh": "vitest run --config vitest.config.ts scripts/ssh-command.test.mjs",
-    "test": "vitest run --config vitest.config.ts"
+    "check": "tsc --noEmit",
+    "test": "vitest run --config vitest.config.ts",
+    "proof:verdict": "vitest run --config vitest.config.ts tests/verdict.test.ts",
+    "proof:verdict:negative": "vitest run --config proofs/verdict/vitest.config.ts",
+    "proof:ibmi": "vitest run --config proofs/ibmi/vitest.config.ts",
+    "proof:context": "vitest run --config proofs/ibmi/vitest.config.ts --testNamePattern \"^(continuité|deux contextes|messages)\""
   },
   "dependencies": {
+    "fast-xml-parser": "^5.11.2",
+    "itoolkit": "^1.1.0",
     "ssh2": "^1.17.0"
   },
   "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/ssh2": "^1.15.6",
+    "typescript": "^7.0.2",
     "vitest": "^5.0.5"
   }
 }
