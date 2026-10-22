@@ -13,6 +13,9 @@ Scénario fondé sur un comportement existant de ckool, utilisé dans le corpus 
 **Contexte IBM i de test**:
 Contexte d’exécution dédié à un seul test, conservé de sa préparation jusqu’à la collecte de ses observations.
 
+**Bibliothèque de test**:
+Bibliothèque dédiée à un seul test, contenant les objets et données préparés explicitement pour son exécution et appartenant à cTestI.
+
 **Résultat d’appel**:
 Issue observable d’un appel RPGLE, terminé normalement ou avec une erreur IBM i, sur laquelle le test peut formuler des assertions.
 
