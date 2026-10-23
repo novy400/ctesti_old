@@ -42,6 +42,9 @@ Conserver JUnit (`artifacts/ibmi-junit.xml`) et les inventaires (`artifacts/cont
 
 Le [bilan final SSH et messages](qualification-ssh-messages-2026-10-22.md) consigne la campagne réussie de 7 tests IBM i et ses limites. Les [premiers essais stateless](qualification-stateless-2026-10-22.md) et le [mode persistant abandonné](qualification-2026-10-22.md) restent disponibles comme historique.
 
+Le banc du ticket #10 et ses campagnes ciblées sont décrits dans
+[Attribution des observations](observations.md) : `npm run proof:observations`.
+
 ## Construire une séquence
 
 ```typescript

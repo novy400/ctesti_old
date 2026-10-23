@@ -9,6 +9,7 @@ préparation, appels et collecte dans le même job, puis assertions TypeScript.
 - [Contrat stateless](docs/adr/0001-stateless-test-request.md)
 - [Configuration et preuves IBM i](proofs/ibmi/README.md)
 - [Dernière qualification SSH et messages](proofs/ibmi/qualification-ssh-messages-2026-10-22.md)
+- [Attribution par appel — résultats du 23 octobre](proofs/ibmi/qualification-observations-2026-10-23.md)
 - [Preuves du verdict Vitest](proofs/verdict/README.md)
 - [Vocabulaire](GLOSSARY.md)
 

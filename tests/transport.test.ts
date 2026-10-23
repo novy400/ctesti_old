@@ -46,6 +46,21 @@ test('le transport transmet *here sans IPC, JOBD ou arrêt de job', async () => 
   expect(client.destroy).toHaveBeenCalledTimes(1);
 });
 
+test('le budget XML est validé avant connexion', async () => {
+  for (const maxResponseBytes of [0, NaN, 64 * 1024 * 1024 + 1]) {
+    await expect(request(config, '<myscript/>', { maxResponseBytes })).rejects.toMatchObject({ execution: 'not-submitted' });
+  }
+  expect(clients).toHaveLength(0);
+});
+
+test('une réponse dépassant son enveloppe est indéterminée sans rejeu', async () => {
+  const pending = request({ ...config, sshAttempts: 3 }, '<myscript/>', { maxResponseBytes: 8 });
+  clients[0]!.emit('ready');
+  clients[0]!.stream.emit('data', Buffer.alloc(9));
+  await expect(pending).rejects.toMatchObject({ execution: 'indeterminate', retryable: false });
+  expect(clients).toHaveLength(1);
+});
+
 test.each([false, true])('timeout : soumission=%s, aucune nouvelle connexion', async submitted => {
   const pending = request(config, '<myscript/>');
   if (submitted) clients[0]!.emit('ready');

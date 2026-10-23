@@ -17,6 +17,11 @@ export class ProofContext extends ProofLifecycle {
   private identities: string[] = [];
   constructor(readonly config = configuration()) { super(); }
 
+  get verifiedJob(): string {
+    if (this.identities.length !== 2 || this.identities[0] !== this.identities[1]) throw new Error('Job non vérifié');
+    return this.identities[0]!;
+  }
+
   async inventory(): Promise<void> {
     await mkdir('artifacts/contexts', { recursive: true });
     await writeFile(`artifacts/contexts/${this.id}.json`, JSON.stringify({

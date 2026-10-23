@@ -14,7 +14,9 @@
     "proof:verdict": "vitest run --config vitest.config.ts tests/verdict.test.ts",
     "proof:verdict:negative": "vitest run --config proofs/verdict/vitest.config.ts",
     "proof:ibmi": "vitest run --config proofs/ibmi/vitest.config.ts",
-    "proof:context": "vitest run --config proofs/ibmi/vitest.config.ts --testNamePattern \"^(continuité|deux contextes|messages)\""
+    "proof:context": "vitest run --config proofs/ibmi/vitest.config.ts --testNamePattern \"^(continuité|deux contextes|messages)\"",
+    "proof:observations": "vitest run --config proofs/ibmi/vitest.config.ts --testNamePattern \"^observations :\"",
+    "proof:observations:limits": "vitest run --config proofs/ibmi/vitest.config.ts --testNamePattern \"^observations limites nominales :\""
   },
   "dependencies": {
     "fast-xml-parser": "^5.11.2",

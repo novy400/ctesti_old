@@ -10,7 +10,11 @@ export class TransportError extends Error {
 }
 
 type Configuration = ReturnType<typeof configuration>;
-export interface RequestOptions { beforeSubmit?: () => Promise<void>; }
+export interface RequestOptions {
+  beforeSubmit?: () => Promise<void>;
+  // Enveloppe XML distincte du budget de messages par appel ; 10 Mio par défaut.
+  maxResponseBytes?: number;
+}
 const nextConnections = new Map<string, number>();
 
 // Espace seulement les ouvertures vers une cible, pas les scénarios déjà actifs.
@@ -81,7 +85,7 @@ function executeOnce(config: Configuration, command: string, input: string, pref
         stream.on('error', () => finish('Canal SSH interrompu'));
         stream.on('data', (chunk: Buffer) => {
           bytes += chunk.length;
-          if (bytes > 10 * 1024 * 1024) { finish('Réponse supérieure à 10 Mio'); return; }
+          if (bytes > (options.maxResponseBytes ?? 10 * 1024 * 1024)) { finish('Limite de réponse XML dépassée'); return; }
           chunks.push(chunk);
         });
         // Ne jamais exporter stderr : il peut contenir des données de la requête.
@@ -117,5 +121,9 @@ function prerequisiteCommand(config: Configuration): string {
 }
 
 export function request(config: Configuration, xml: string, options: RequestOptions = {}): Promise<string> {
+  if (options.maxResponseBytes !== undefined && (!Number.isSafeInteger(options.maxResponseBytes)
+    || options.maxResponseBytes < 1 || options.maxResponseBytes > 64 * 1024 * 1024)) {
+    return Promise.reject(new TransportError('not-submitted', 'Budget de réponse XML invalide (maximum 64 Mio)'));
+  }
   return execute(config, `if ${prerequisiteCommand(config)}; then '${config.cli}' -c '*here *cdata'; else exit 78; fi`, xml, false, options);
 }
