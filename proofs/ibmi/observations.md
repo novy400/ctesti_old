@@ -44,6 +44,12 @@ collectée permet l’appel suivant.
 
 ## Budgets et campagne nominale
 
+La cible appartient à un tiers. La règle d’approbation dans
+[`AGENTS.md`](../../AGENTS.md) s’applique avant toute campagne de volume,
+y compris avec `CTESTI_COLLECTION_STRESS=1`. Le drapeau active les tests ;
+il ne vaut pas accord de l’utilisateur. Présenter la charge et attendre
+l’accord explicite avant d’exécuter les commandes ci-dessous.
+
 Les budgets initiaux par collecte sont 15 s, 10 000 messages et 10 Mio de JSON
 UTF-8 (texte et tokens hex compris). Atteindre un seuil n’est pas un succès.
 Les seuils réduits suivent exactement le même chemin serveur. Les injections
